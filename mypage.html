@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>マイページ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>マイページ</h1>
+    <nav>
+      <a href="index.html">商品ページ</a>
+      <button onclick="logout()">ログアウト</button>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>ユーザー情報</h2>
+      <form id="user-form">
+        <label>ユーザーID: <input type="text" id="user-id" readonly></label><br>
+        <label>メールアドレス: <input type="email" id="email"></label><br>
+        <label>住所: <input type="text" id="address"></label><br>
+        <button type="submit">保存</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>購入履歴</h2>
+      <ul id="order-history"></ul>
+    </section>
+  </main>
+
+  <script src="mypage.js"></script>
+</body>
+</html>
