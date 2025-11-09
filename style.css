@@ -1,52 +1,86 @@
+/* ベース設定 */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Noto Sans JP", "Helvetica", Arial, sans-serif;
   max-width: 900px;
   margin: auto;
-  padding: 1rem;
-  background: #fff8f0;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #fffdf8 0%, #fff8f0 100%);
   color: #333;
 }
 
+/* ヘッダー */
 header {
   text-align: center;
   margin-bottom: 2rem;
+  background: linear-gradient(135deg, #ffb347, #ffcc33);
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  box-shadow: 0 4px 8px rgba(255, 179, 71, 0.3);
 }
 
 header h1 {
   margin: 0;
-  color: #b33f3f;
+  font-size: 2rem;
+  color: #fff;
+  letter-spacing: 0.05em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-nav button, nav a {
-  background-color: #b33f3f;
+header p {
+  color: #fffbe6;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+nav button,
+nav a {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  margin: 0.2rem;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem;
   cursor: pointer;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(255, 126, 95, 0.3);
 }
 
+nav button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 126, 95, 0.4);
+}
+
+/* セクション */
 main section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 h2 {
-  border-bottom: 2px solid #b33f3f;
-  padding-bottom: 0.3rem;
-  margin-bottom: 1rem;
+  border-bottom: 3px solid #ffb347;
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.2rem;
+  color: #ff7e5f;
+  font-size: 1.4rem;
 }
 
 /* 商品カード */
 .product {
-  border: 1px solid #ccc;
+  border: none;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  border-radius: 8px;
-  background-color: #fff3e6;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.product:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(255, 179, 71, 0.3);
 }
 
 .product img {
@@ -54,27 +88,38 @@ h2 {
   height: 120px;
   object-fit: cover;
   margin-right: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  border-radius: 12px;
+  border: 2px solid #ffb347;
 }
 
 .product h3 {
-  margin: 0 0 0.5rem 0;
-  color: #b33f3f;
+  margin: 0 0 0.4rem 0;
+  color: #ff7e5f;
+  font-size: 1.2rem;
 }
 
 .product p {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.6rem 0;
+  color: #666;
+  font-size: 0.95rem;
 }
 
 .product button {
   margin-top: 0.5rem;
-  background-color: #b33f3f;
+  background: linear-gradient(90deg, #66d3a5, #6ed6ff);
   color: white;
   border: none;
-  padding: 0.3rem 0.7rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 24px;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(110, 214, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.product button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(110, 214, 255, 0.4);
 }
 
 /* カート */
@@ -86,37 +131,88 @@ h2 {
 #cart-items li {
   display: flex;
   justify-content: space-between;
-  padding: 0.3rem 0;
+  padding: 0.5rem 0;
   border-bottom: 1px dashed #ccc;
+  font-size: 0.95rem;
 }
 
 #cart-items button {
-  background-color: #888;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
+  background: #ccc;
+  padding: 0.3rem 0.6rem;
+  border-radius: 16px;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* フォーム */
+#cart-items button:hover {
+  background: #aaa;
+  color: white;
+}
+
+#total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  color: #444;
+}
+
+button[onclick="checkout()"] {
+  display: block;
+  margin-top: 1rem;
+  width: 100%;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1rem;
+  font-size: 1.1rem;
+  border-radius: 32px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(255, 126, 95, 0.3);
+}
+
+button[onclick="checkout()"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 126, 95, 0.4);
+}
+
+/* 入力フォーム（共通） */
 form input {
-  padding: 0.3rem;
-  margin: 0.3rem 0;
+  padding: 0.4rem;
+  margin: 0.4rem 0;
   width: 100%;
   box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+form input:focus {
+  border-color: #ffb347;
+  box-shadow: 0 0 4px rgba(255, 179, 71, 0.4);
+  outline: none;
 }
 
 form button {
-  background-color: #b33f3f;
+  background: linear-gradient(90deg, #66d3a5, #6ed6ff);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 24px;
+  font-weight: 600;
   margin-top: 0.5rem;
+  transition: all 0.3s ease;
 }
 
-/* モーダル用（不要なら非表示のまま） */
+form button:hover {
+  transform: scale(1.05);
+}
+
+/* モーダル */
 .modal {
   display: none;
   position: fixed;
@@ -130,7 +226,8 @@ form button {
 .modal-content {
   background: white;
   padding: 1.5rem;
-  border-radius: 8px;
+  border-radius: 12px;
   text-align: center;
-  width: 300px;
+  width: 320px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
