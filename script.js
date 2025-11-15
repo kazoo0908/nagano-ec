@@ -14,7 +14,6 @@ window.onload = () => {
   renderCart();
 };
 
-// カート追加
 function addToCart(productName, price) {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("sessionToken");
@@ -23,11 +22,26 @@ function addToCart(productName, price) {
     window.location.href = "login.html";
     return;
   }
+
   cart.push({ name: productName, price: price });
   total += price;
   saveCart();
   renderCart();
+
+  // --- KARTE: カート追加イベント送信 ---
+  krt("send", "cart_add", {
+    item_id: productName === "信州りんご" ? "apple_001" :
+             productName === "おやき"   ? "oyaki_002" :
+                                          "sake_003",
+    item_name: productName,
+    category: productName === "信州りんご" ? "果物" :
+              productName === "おやき"   ? "惣菜" :
+                                           "酒類",
+    price: price,
+    quantity: 1
+  });
 }
+
 
 // カート描画
 function renderCart() {
@@ -100,9 +114,29 @@ function checkout() {
 
   alert(`購入（テスト）ありがとうございました！\n合計: ¥${total}`);
 
+  // --- KARTE: 購入イベント送信（ここが最重要） ---
+  krt("send", "purchase_complete", {
+    order_id: "ORD_" + Date.now(),
+    total_amount: total,
+    items: cart.map((item) => ({
+      item_id:
+        item.name === "信州りんご" ? "apple_001" :
+        item.name === "おやき"     ? "oyaki_002" :
+                                     "sake_003",
+      item_name: item.name,
+      category:
+        item.name === "信州りんご" ? "果物" :
+        item.name === "おやき"     ? "惣菜" :
+                                     "酒類",
+      price: item.price,
+      quantity: 1
+    }))
+  });
+
   // カートリセット
   cart = [];
   total = 0;
   saveCart();
   renderCart();
 }
+
