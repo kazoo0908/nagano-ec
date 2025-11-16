@@ -140,3 +140,38 @@ function checkout() {
   renderCart();
 }
 
+// ▼ 長野県の天気取得（Open-Meteo API）
+async function loadWeather() {
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=36.65&longitude=138.1833&daily=temperature_2m_max,temperature_2m_min&hourly=precipitation_probability&timezone=Asia%2FTokyo";
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const weather = data.current_weather;
+
+    const weatherBox = document.getElementById("weather-box");
+    weatherBox.innerHTML = `
+      <p>現在の気温：${weather.temperature}℃</p>
+      <p>風速：${weather.windspeed} m/s</p>
+      <p>天気コード：${weather.weathercode}</p>
+    `;
+  } catch (error) {
+    console.error("天気APIエラー:", error);
+    document.getElementById("weather-box").innerHTML = "天気情報を取得できませんでした...";
+  }
+}
+
+// ▼ ページ読み込み時に天気取得
+window.onload = () => {
+  // 既存のセッション・カート復元処理があるので補完方式で書く
+  if (typeof loadCart === "function") {
+    const token = localStorage.getItem("sessionToken");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (token && user && user.token === token) loadCart();
+    renderCart();
+  }
+
+  loadWeather(); // ← 天気を読み込む
+};
+
