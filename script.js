@@ -142,17 +142,22 @@ function checkout() {
 
 // ▼ 長野県の天気取得（Open-Meteo API）
 async function loadWeather() {
-  const url = "https://api.open-meteo.com/v1/forecast?latitude=36.65&longitude=138.1833&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo";
+  // 💡 修正点: current_weather=true を追加しました
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=36.65&longitude=138.1833&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo";
 
   try {
     const res = await fetch(url);
     const data = await res.json();
 
+    // ✅ これで 'current_weather' プロパティが取得できます
     const weather = data.current_weather;
 
     const weatherBox = document.getElementById("weather-box");
+    
+    // ⚠️ weathercode の値を人間が理解しやすいように変換することを検討してください
+    // (例: 0 -> "快晴")
     weatherBox.innerHTML = `
-      <p>現在の気温：${weather.temperature}℃</p>
+      <p>現在の気温：**${weather.temperature}℃**</p>
       <p>風速：${weather.windspeed} m/s</p>
       <p>天気コード：${weather.weathercode}</p>
     `;
