@@ -157,7 +157,7 @@ async function loadWeather() {
     // ⚠️ weathercode の値を人間が理解しやすいように変換することを検討してください
     // (例: 0 -> "快晴")
     weatherBox.innerHTML = `
-      <p>現在の気温：**${weather.temperature}℃**</p>
+      <p>現在の気温：${weather.temperature}℃</p>
       <p>風速：${weather.windspeed} m/s</p>
       <p>天気コード：${weather.weathercode}</p>
     `;
