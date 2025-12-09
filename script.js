@@ -14,6 +14,82 @@ window.onload = () => {
   renderCart();
 };
 
+// --------- おすすめランキングを取得して描画 ---------
+async function fetchRecommendations(limit = 5) {
+  try {
+    const res = await fetch('/api/recommendations?limit=' + encodeURIComponent(limit), {
+      cache: 'no-store' // 更新をすぐに反映したい場合
+    });
+    if (!res.ok) throw new Error('Network response not ok');
+    const data = await res.json();
+    renderRecommendations(data);
+  } catch (err) {
+    console.error('recommend fetch error', err);
+    const el = document.getElementById('recommend-list');
+    el.innerHTML = '<p class="muted">おすすめ情報を取得できませんでした。</p>';
+  }
+}
+
+function renderRecommendations(items) {
+  const el = document.getElementById('recommend-list');
+  if (!items || items.length === 0) {
+    el.innerHTML = '<p class="muted">おすすめ商品はありません。</p>';
+    return;
+  }
+  // カード群を作る
+  el.innerHTML = '';
+  const list = document.createElement('div');
+  list.className = 'recommend-grid';
+  items.forEach((p, idx) => {
+    const card = document.createElement('article');
+    card.className = 'product recommend-card';
+    card.innerHTML = `
+      <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy" />
+      <div>
+        <div style="font-weight:700;color:#b33f3f">#${idx+1} ${escapeHtml(p.name)}</div>
+        <div class="small">${escapeHtml(p.catch || '')}</div>
+        <div style="margin-top:6px;font-weight:800">${formatYen(p.price)}</div>
+        <div style="margin-top:8px">
+          <button class="btn-primary" data-id="${escapeHtml(p.id)}">カートに入れる</button>
+          <button class="btn-secondary" data-id="${escapeHtml(p.id)}">詳細</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  el.appendChild(list);
+
+  // ボタンイベント（カート追加等）
+  el.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = e.currentTarget.dataset.id;
+      // サーバからid→商品情報を取得するか、フロントに商品情報を含める
+      const product = items.find(x => x.id === id);
+      if (product) addToCart(product.name, product.price);
+      else alert('商品情報が見つかりません');
+    });
+  });
+  el.querySelectorAll('.btn-secondary').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = e.currentTarget.dataset.id;
+      // 詳細は商品ページへ遷移するなど
+      window.location.href = '/product.html?id=' + encodeURIComponent(id);
+    });
+  });
+}
+
+// 小さな安全関数
+function escapeHtml(s = '') {
+  return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+function formatYen(n) { return '¥' + Number(n).toLocaleString(); }
+
+// 初回読み込み時に取得
+document.addEventListener('DOMContentLoaded', () => {
+  fetchRecommendations(5); // 上位5件取得
+});
+
+
 function addToCart(productName, price) {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = localStorage.getItem("sessionToken");
