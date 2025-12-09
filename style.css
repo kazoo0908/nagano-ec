@@ -244,14 +244,16 @@ form button:hover {
   padding: 0;
 }
 
-/* ▼ タイル全体のリスト */
+/* ▼ タイル全体のリスト（PC：1行4列固定） */
 .tile-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* PC：4列 */
-  gap: 16px;
-  list-style: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* 1行4列を強制 */
+  width: 100%;
+  max-width: 1100px;  /* 横幅を確保して4枚並ぶように */
+  margin: 16px auto;  /* 中央寄せ */
+  gap: 20px;
   padding: 0;
-  margin: 16px 0;
+  list-style: none;
 }
 
 /* 各タイル */
@@ -261,48 +263,44 @@ form button:hover {
 
 .tile img {
   width: 100%;
-  max-width: 140px;
   height: auto;
+  max-width: 200px;     /* PC で4枚並べても収まる大きさ */
+  margin: 0 auto;
+  display: block;
+  border-radius: 10px;
   object-fit: cover;
-  border-radius: 8px;
 }
 
 .tile .name {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
 }
 
-
-/* ▼ スマホ向けレスポンシブ：2列にする（〜768px） */
+/* ▼ スマホ向けレスポンシブ：2列表示 */
 @media (max-width: 768px) {
   .tile-list {
-    grid-template-columns: repeat(2, 1fr); /* スマホ：2列 */
+    grid-template-columns: repeat(2, 1fr); /* スマホ → 2列 */
+    max-width: 100%;
+    gap: 14px;
+  }
+
+  .tile img {
+    max-width: 140px;
+  }
+}
+
+/* ▼ 小型スマホ：余白とサイズ調整 */
+@media (max-width: 480px) {
+  .tile-list {
     gap: 12px;
   }
 
   .tile img {
-    max-width: 120px;
-  }
-
-  .tile .name {
-    font-size: 13px;
-  }
-}
-
-/* ▼ 超小型スマホ（〜480px）：さらに余白調整 */
-@media (max-width: 480px) {
-  .tile-list {
-    gap: 10px;
-  }
-
-  .tile img {
-    max-width: 100px;
+    max-width: 110px;
   }
 
   .tile .name {
     font-size: 12px;
   }
 }
-
-
